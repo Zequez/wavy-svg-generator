@@ -221,13 +221,15 @@ function App(props) {
         preserveAspectRatio="none"
         fill="currentColor"
       >
-        <path
-          fill-opacity="1"
-          class="strokePath"
-          d=""
-          stroke-width=${strokeThickness}
-          stroke="#555"
-        ></path>
+        ${strokeThickness > 0
+          ? html`<path
+              stroke-opacity="0.5"
+              class="strokePath"
+              d=""
+              stroke-width=${strokeThickness}
+              stroke="currentColor"
+            ></path>`
+          : null}
         <path fill-opacity="1" class="fillPath" d=""></path>
         ${renderDebugElements()}
       </svg>
@@ -250,6 +252,16 @@ function App(props) {
   preserveAspectRatio="none"
   fill="currentColor"
 >
+${
+  strokeThickness > 0
+    ? `<path
+  stroke-opacity="1"
+  d="${wavy.strokePath}"
+  stroke-width="${strokeThickness}"
+  stroke="currentColor"
+></path>`
+    : ""
+}
   <path fill-opacity="1" d="${wavy.fillPath}"></path>
 </svg>
 `;
