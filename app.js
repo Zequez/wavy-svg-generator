@@ -21,14 +21,15 @@ function App(props) {
   const [WW, setWW] = useState(1440);
   const [HH, setHH] = useState(300);
   const [points, setPoints] = useState(3);
+  const [angleRange, setAngleRange] = useState(0.1);
   const [wavy, setWavy] = useState(() => buildWavy());
 
   useEffect(() => {
     setWavy(buildWavy());
-  }, [WW, HH, points, seed]);
+  }, [WW, HH, points, seed, angleRange]);
 
   function buildWavy() {
-    return wavySvg(seed, WW, HH, points);
+    return wavySvg(seed, WW, HH, points, { angleRange });
   }
 
   function randomizeSeed() {
@@ -36,7 +37,6 @@ function App(props) {
   }
 
   function renderDebugElements() {
-    console.log(wavy.debugPoints());
     let elements = [];
     elements = elements.concat(
       wavy
@@ -82,7 +82,22 @@ function App(props) {
             class=${tw`cursor-ew-resize mx-2`}
             onInput=${(e) => setPoints(parseInt(e.target.value))}
           />
-          ${points}
+          <span class=${tw`font-mono opacity-70`}>${points}</span>
+        </div>
+        <div class=${tw`mb-4 text(xl black opacity-75)`}>
+          Angle Range
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value=${angleRange}
+            class=${tw`cursor-ew-resize mx-2`}
+            onInput=${(e) => setAngleRange(parseFloat(e.target.value))}
+          />
+          <span class=${tw`font-mono opacity-70`}
+            >${Number.parseFloat(angleRange).toFixed(2)}</span
+          >
         </div>
         <button
           class=${tw`p-2 m-2 bg-blue-400 text-white rounded-md uppercase tracking-wider font-bold transition focus:outline-none hocus:bg-blue-500 hocus:scale-105 active:scale-95`}

@@ -12,15 +12,11 @@ export function randControl({
   maxShift = 0.25,
   angleRange = 0.5,
 }) {
-  // if angleRange = 1 => PI
-  // if angleRange = 0 => 0
-  // if angleRange = 0.5 => PI / 2
-
-  const angle = r() * Math.PI * angleRange;
-  // console.log("ANGLE", angle, Math.cos(angle));
+  const angle = (r() * Math.PI - Math.PI / 2) * angleRange;
   const length = r() * (maxLen - minLen) + minLen;
   const shift = r() * ((length / 2) * maxShift);
 
+  // soh cah toa
   const x1 = -Math.cos(angle) * (length / 2 + shift);
   const y1 = Math.sin(angle) * (length / 2 + shift);
   const x2 = Math.cos(angle) * (length / 2 - shift);
@@ -64,16 +60,16 @@ export function randomPoints(WW, HH, points, { heightRange = 0.5 }) {
   return pointsX.map((x) => ({ x, y: randHeight(HH, heightRange) }));
 }
 
-export function wavySvg(seed, WW, HH, points) {
+export function wavySvg(seed, WW, HH, points, { angleRange }) {
   const path = new SvgPath();
 
   resetSeed(seed);
   const p = randomPoints(WW, HH, points, { heightRange: 0.5 });
   const c = randControls(points, {
-    minLen: 200,
-    maxLen: 300,
-    angleRange: 0.1,
-    maxShift: 0.25,
+    minLen: 150,
+    maxLen: 150,
+    angleRange,
+    maxShift: 0,
   });
 
   path.move(p[0].x, p[0].y);
