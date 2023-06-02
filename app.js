@@ -84,137 +84,77 @@ function App(props) {
         Made specifically for those wacky page dividers everyone loves
       </p>
       <div class=${tw`text-center pt-4`}>
-        <div class=${tw`mb-4 text(xl black opacity-75)`}>
-          Seed
-          <input
-            class=${tw`rounded-md p-2 mx-2 shadow-md`}
-            type="number"
-            value=${seed}
-            onInput=${(e) => setSeed(parseInt(e.target.value))}
-          />
-        </div>
-        <div class=${tw`mb-4 text(xl black opacity-75)`}>
-          <div class=${tw`inline-block w-1/2 text-right`}>Box Width</div>
-          <div class=${tw`inline-block w-1/2 text-left`}>
+        ${InputContainer(
+          "Seed",
+          html`
             <input
-              type="range"
-              min="100"
-              max="3000"
-              value=${WW}
-              class=${tw`cursor-ew-resize mx-2`}
-              onInput=${(e) => setWW(parseInt(e.target.value))}
+              class=${tw`rounded-md p-2 mx-2 shadow-md`}
+              type="number"
+              value=${seed}
+              onInput=${(e) => setSeed(parseInt(e.target.value))}
             />
-            <span class=${tw`font-mono opacity-70`}>${WW}</span>
-          </div>
-        </div>
-        <div class=${tw`mb-4 text(xl black opacity-75)`}>
-          Box Height
-          <input
-            type="range"
-            min="100"
-            max="3000"
-            value=${HH}
-            class=${tw`cursor-ew-resize mx-2`}
-            onInput=${(e) => setHH(parseInt(e.target.value))}
-          />
-          <span class=${tw`font-mono opacity-70`}>${HH}</span>
-        </div>
-        <div class=${tw`mb-4 text(xl black opacity-75)`}>
-          Points
-          <input
-            type="range"
-            min="2"
-            max="10"
-            value=${points}
-            class=${tw`cursor-ew-resize mx-2`}
-            onInput=${(e) => setPoints(parseInt(e.target.value))}
-          />
-          <span class=${tw`font-mono opacity-70`}>${points}</span>
-        </div>
-        <div class=${tw`mb-4 text(xl black opacity-75)`}>
-          Height Range
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value=${heightRange}
-            class=${tw`cursor-ew-resize mx-2`}
-            onInput=${(e) => setHeightRange(parseFloat(e.target.value))}
-          />
-          <span class=${tw`font-mono opacity-70`}
-            >${Number.parseFloat(heightRange).toFixed(2)}</span
-          >
-        </div>
-        <div class=${tw`mb-4 text(xl black opacity-75)`}>
-          Angle Range
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value=${angleRange}
-            class=${tw`cursor-ew-resize mx-2`}
-            onInput=${(e) => setAngleRange(parseFloat(e.target.value))}
-          />
-          <span class=${tw`font-mono opacity-70`}
-            >${Number.parseFloat(angleRange).toFixed(2)}</span
-          >
-        </div>
-        <div class=${tw`mb-4 text(xl black opacity-75)`}>
-          Control Min Rate
-          <input
-            type="range"
-            min="0"
-            step="0.01"
-            max="1"
-            value=${controlMinRate}
-            class=${tw`cursor-ew-resize mx-2`}
-            onInput=${(e) => setControlMinRate(parseFloat(e.target.value))}
-          />
-          <span class=${tw`font-mono opacity-70`}
-            >${Number.parseFloat(controlMinRate).toFixed(2)}</span
-          >
-        </div>
-        <div class=${tw`mb-4 text(xl black opacity-75)`}>
-          Control Max Length
-          <input
-            type="range"
-            min="0"
-            max="1000"
-            value=${controlMaxLen}
-            class=${tw`cursor-ew-resize mx-2`}
-            onInput=${(e) => setControlMaxLen(parseInt(e.target.value))}
-          />
-          <span class=${tw`font-mono opacity-70`}>${controlMaxLen}</span>
-        </div>
-        <div class=${tw`mb-4 text(xl black opacity-75)`}>
-          Control Max Shift
-          <input
-            type="range"
-            min="0"
-            step="0.01"
-            max="1"
-            value=${maxShift}
-            class=${tw`cursor-ew-resize mx-2`}
-            onInput=${(e) => setMaxShift(parseFloat(e.target.value))}
-          />
-          <span class=${tw`font-mono opacity-70`}
-            >${Number.parseFloat(maxShift).toFixed(2)}</span
-          >
-        </div>
-        <div class=${tw`mb-4 text(xl black opacity-75)`}>
-          Stroke Thickness
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value=${strokeThickness}
-            class=${tw`cursor-ew-resize mx-2`}
-            onInput=${(e) => setStrokeThickness(parseInt(e.target.value))}
-          />
-          <span class=${tw`font-mono opacity-70`}>${strokeThickness}</span>
-        </div>
+          `
+        )}
+        ${RangeInput({
+          name: "Box Width",
+          min: 100,
+          max: 3000,
+          value: WW,
+          onInput: setWW,
+        })}
+        ${RangeInput({
+          name: "Box Height",
+          min: 100,
+          max: 3000,
+          value: HH,
+          onInput: setHH,
+        })}
+        ${RangeInput({
+          name: "Points",
+          min: 2,
+          max: 10,
+          value: points,
+          onInput: setPoints,
+        })}
+        ${RangeInput({
+          name: "Height Range",
+          isRatio: true,
+          value: heightRange,
+          onInput: setHeightRange,
+        })}
+        ${RangeInput({
+          name: "Angle Range",
+          isRatio: true,
+          value: angleRange,
+          onInput: setAngleRange,
+        })}
+        ${RangeInput({
+          name: "Control Min Rate",
+          isRatio: true,
+          value: controlMinRate,
+          onInput: setControlMinRate,
+        })}
+        ${RangeInput({
+          name: "Control Max Length",
+          min: 0,
+          max: 1000,
+          value: controlMaxLen,
+          onInput: setControlMaxLen,
+        })}
+        ${RangeInput({
+          name: "Control Max Shift",
+          isRatio: true,
+          value: maxShift,
+          onInput: setMaxShift,
+        })}
+        ${RangeInput({
+          name: "Stroke Thickness",
+          min: 0,
+          max: 100,
+          value: strokeThickness,
+          onInput: setStrokeThickness,
+        })}
+
         <button
           class=${tw`p-2 m-2 bg-blue-400 text-white rounded-md uppercase tracking-wider font-bold transition focus:outline-none hocus:bg-blue-500 hocus:scale-105 active:scale-95`}
           onClick=${randomizeSeed}
@@ -285,6 +225,40 @@ ${
 `;
   }
 }
+
+const InputContainer = (name, inputEl) => html` <div
+  class=${tw`mb-4 text(xl black opacity-75)`}
+>
+  <div class=${tw`inline-block w-1/2 text-right`}>${name}</div>
+  <div class=${tw`inline-block w-1/2 text-left`}>${inputEl}</div>
+</div>`;
+
+const RangeInput = ({ name, min, max, value, onInput, isRatio }) => {
+  if (isRatio) {
+    min = 0;
+    max = 1;
+  }
+  return InputContainer(
+    name,
+    html`
+      <input
+        type="range"
+        min=${min}
+        max=${max}
+        value=${value}
+        step=${isRatio ? 0.01 : 1}
+        class=${tw`cursor-ew-resize mx-2`}
+        onInput=${(e) =>
+          onInput(
+            isRatio ? parseFloat(e.target.value) : parseInt(e.target.value)
+          )}
+      />
+      <span class=${tw`font-mono opacity-70`}
+        >${isRatio ? parseFloat(value).toFixed(2) : value}</span
+      >
+    `
+  );
+};
 
 render(html`<${App} name="asrtarst" />`, document.getElementById("app"));
 
