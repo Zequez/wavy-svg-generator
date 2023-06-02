@@ -10,17 +10,7 @@ setup({
   },
 });
 
-import SvgPath from "./svgPath.js";
-import { randomWave } from "./rand.js";
-
-function randomPath(seed, WW, HH, points) {
-  const path = new SvgPath();
-  randomWave(seed, WW, HH, points, path);
-  path.line(WW, HH);
-  path.line(0, HH);
-  path.end();
-  return path.result();
-}
+import { wavySvg } from "./wavySvg.js";
 
 function randomSeed() {
   return Math.round(Math.random() * 1000000);
@@ -31,14 +21,14 @@ function App(props) {
   const [WW, setWW] = useState(1440);
   const [HH, setHH] = useState(300);
   const [points, setPoints] = useState(3);
-  const [pathData, setPathData] = useState(() => generatePath());
+  const [wavy, setWavy] = useState(() => buildWavy());
 
   useEffect(() => {
-    setPathData(generatePath());
+    setWavy(buildWavy());
   }, [WW, HH, points, seed]);
 
-  function generatePath() {
-    return randomPath(seed, WW, HH, points);
+  function buildWavy() {
+    return wavySvg(seed, WW, HH, points);
   }
 
   function randomizeSeed() {
@@ -46,7 +36,22 @@ function App(props) {
   }
 
   function renderDebugElements() {
-    return html`<circle cx="100" cy="100" r="10" fill="red" />`;
+    console.log(wavy.debugPoints());
+    let elements = [];
+    elements = elements.concat(
+      wavy
+        .debugPoints()
+        .map(([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="red" />`)
+    );
+    elements = elements.concat(
+      wavy
+        .debugControlPoints()
+        .map(
+          ([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="green" />`
+        )
+    );
+
+    return elements;
   }
 
   return html`
@@ -88,7 +93,7 @@ function App(props) {
       </div>
       <style>
         svg path {
-          d: path("${pathData}");
+          d: path("${wavy.path}");
           transition: 0.5s;
         }
       </style>
@@ -120,7 +125,7 @@ function App(props) {
   preserveAspectRatio="none"
   fill="currentColor"
 >
-  <path fill-opacity="1" d="${pathData}"></path>
+  <path fill-opacity="1" d="${wavy.path}"></path>
 </svg>
 `;
   }
