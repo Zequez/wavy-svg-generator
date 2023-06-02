@@ -67,7 +67,7 @@ export function wavySvg(
   points,
   { angleRange, controlMinLen, controlMaxLen, controlMaxShift }
 ) {
-  const path = new SvgPath();
+  const fillPath = new SvgPath();
 
   resetSeed(seed);
   const p = randomPoints(WW, HH, points, { heightRange: 0.5 });
@@ -78,13 +78,13 @@ export function wavySvg(
     maxShift: controlMaxShift,
   });
 
-  path.move(p[0].x, p[0].y);
+  fillPath.move(p[0].x, p[0].y);
   for (let i = 1; i < points; ++i) {
     const p0 = p[i - 1];
     const c0 = c[i - 1];
     const p1 = p[i];
     const c1 = c[i];
-    path.curve(
+    fillPath.curve(
       p0.x + c0.x2,
       p0.y + c0.y2,
       p1.x + c1.x1,
@@ -94,15 +94,18 @@ export function wavySvg(
     );
   }
 
-  path.line(WW, HH);
-  path.line(0, HH);
-  path.end();
+  const strokePath = fillPath.clone();
+
+  fillPath.line(WW, HH);
+  fillPath.line(0, HH);
+  fillPath.end();
 
   const result = {
-    path: path.result(),
+    fillPath: fillPath.result(),
+    strokePath: strokePath.result(),
     debugPoints: () => {
       const points = [];
-      path.instructions.map(([command, ...args]) => {
+      fillPath.instructions.map(([command, ...args]) => {
         if (command === "M") points.push(args);
         else if (command === "C") {
           points.push([args[4], args[5]]);
@@ -113,7 +116,7 @@ export function wavySvg(
     },
     debugControlPoints: () => {
       const points = [];
-      path.instructions.map(([command, ...args]) => {
+      fillPath.instructions.map(([command, ...args]) => {
         if (command === "C") {
           points.push([args[0], args[1]]);
           points.push([args[2], args[3]]);

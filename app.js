@@ -25,6 +25,7 @@ function App(props) {
   const [controlMinRate, setControlMinRate] = useState(0.2);
   const [controlMaxLen, setControlMaxLen] = useState(500);
   const [maxShift, setMaxShift] = useState(0.25);
+  const [strokeThickness, setStrokeThickness] = useState(10);
   const [wavy, setWavy] = useState(() => buildWavy());
 
   useEffect(() => {
@@ -88,6 +89,32 @@ function App(props) {
             value=${seed}
             onInput=${(e) => setSeed(parseInt(e.target.value))}
           />
+        </div>
+        <div class=${tw`mb-4 text(xl black opacity-75)`}>
+          <div class=${tw`inline-block w-1/2 text-right`}>Box Width</div>
+          <div class=${tw`inline-block w-1/2 text-left`}>
+            <input
+              type="range"
+              min="100"
+              max="3000"
+              value=${WW}
+              class=${tw`cursor-ew-resize mx-2`}
+              onInput=${(e) => setWW(parseInt(e.target.value))}
+            />
+            <span class=${tw`font-mono opacity-70`}>${WW}</span>
+          </div>
+        </div>
+        <div class=${tw`mb-4 text(xl black opacity-75)`}>
+          Box Height
+          <input
+            type="range"
+            min="100"
+            max="3000"
+            value=${HH}
+            class=${tw`cursor-ew-resize mx-2`}
+            onInput=${(e) => setHH(parseInt(e.target.value))}
+          />
+          <span class=${tw`font-mono opacity-70`}>${HH}</span>
         </div>
         <div class=${tw`mb-4 text(xl black opacity-75)`}>
           Points
@@ -158,6 +185,18 @@ function App(props) {
             >${Number.parseFloat(maxShift).toFixed(2)}</span
           >
         </div>
+        <div class=${tw`mb-4 text(xl black opacity-75)`}>
+          Stroke Thickness
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value=${strokeThickness}
+            class=${tw`cursor-ew-resize mx-2`}
+            onInput=${(e) => setStrokeThickness(parseInt(e.target.value))}
+          />
+          <span class=${tw`font-mono opacity-70`}>${strokeThickness}</span>
+        </div>
         <button
           class=${tw`p-2 m-2 bg-blue-400 text-white rounded-md uppercase tracking-wider font-bold transition focus:outline-none hocus:bg-blue-500 hocus:scale-105 active:scale-95`}
           onClick=${randomizeSeed}
@@ -167,8 +206,13 @@ function App(props) {
       </div>
       <style>
         svg path {
-          d: path("${wavy.path}");
           transition: 0.5s;
+        }
+        svg .fillPath {
+          d: path("${wavy.fillPath}");
+        }
+        svg .strokePath {
+          d: path("${wavy.strokePath}");
         }
       </style>
       <svg
@@ -177,7 +221,14 @@ function App(props) {
         preserveAspectRatio="none"
         fill="currentColor"
       >
-        <path fill-opacity="1" d=""></path>
+        <path
+          fill-opacity="1"
+          class="strokePath"
+          d=""
+          stroke-width=${strokeThickness}
+          stroke="#555"
+        ></path>
+        <path fill-opacity="1" class="fillPath" d=""></path>
         ${renderDebugElements()}
       </svg>
       <code class=${tw`bg-gray-200 p-2 block whitespace-pre-wrap`}
@@ -199,22 +250,13 @@ function App(props) {
   preserveAspectRatio="none"
   fill="currentColor"
 >
-  <path fill-opacity="1" d="${wavy.path}"></path>
+  <path fill-opacity="1" d="${wavy.fillPath}"></path>
 </svg>
 `;
   }
 }
 
 render(html`<${App} name="asrtarst" />`, document.getElementById("app"));
-
-function addDot(x, y, options = {}) {
-  const circle = document.createElementNS($svg.getAttribute("xmlns"), "circle");
-  circle.setAttribute("cx", x);
-  circle.setAttribute("cy", y);
-  circle.setAttribute("r", "8");
-  circle.setAttribute("fill", options.color || "rgba(255,0,0,0.5)");
-  $svg.appendChild(circle);
-}
 
 function addLine(x1, y1, x2, y2, options = {}) {
   const line = document.createElementNS($svg.getAttribute("xmlns"), "line");

@@ -9,6 +9,12 @@ export default class SvgPath {
     return this.instructions.map((arr) => arr.join(" ")).join(",");
   }
 
+  clone() {
+    const newPath = new SvgPath();
+    newPath.instructions = this.instructions;
+    return newPath;
+  }
+
   move(x, y) {
     this.add("M", x, y);
     // addDot(x, y);
