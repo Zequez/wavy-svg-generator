@@ -26,6 +26,7 @@ function App(props) {
   const [controlMaxLen, setControlMaxLen] = useState(500);
   const [maxShift, setMaxShift] = useState(0.25);
   const [strokeThickness, setStrokeThickness] = useState(10);
+  const [heightRange, setHeightRange] = useState(0.5);
   const [wavy, setWavy] = useState(() => buildWavy());
 
   useEffect(() => {
@@ -39,6 +40,7 @@ function App(props) {
     controlMinRate,
     controlMaxLen,
     maxShift,
+    heightRange,
   ]);
 
   function buildWavy() {
@@ -47,6 +49,7 @@ function App(props) {
       controlMinLen: controlMinRate,
       controlMaxLen,
       controlMaxShift: maxShift,
+      heightRange,
     });
   }
 
@@ -127,6 +130,21 @@ function App(props) {
             onInput=${(e) => setPoints(parseInt(e.target.value))}
           />
           <span class=${tw`font-mono opacity-70`}>${points}</span>
+        </div>
+        <div class=${tw`mb-4 text(xl black opacity-75)`}>
+          Height Range
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value=${heightRange}
+            class=${tw`cursor-ew-resize mx-2`}
+            onInput=${(e) => setHeightRange(parseFloat(e.target.value))}
+          />
+          <span class=${tw`font-mono opacity-70`}
+            >${Number.parseFloat(heightRange).toFixed(2)}</span
+          >
         </div>
         <div class=${tw`mb-4 text(xl black opacity-75)`}>
           Angle Range

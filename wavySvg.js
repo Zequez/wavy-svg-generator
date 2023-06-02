@@ -65,12 +65,12 @@ export function wavySvg(
   WW,
   HH,
   points,
-  { angleRange, controlMinLen, controlMaxLen, controlMaxShift }
+  { angleRange, controlMinLen, controlMaxLen, controlMaxShift, heightRange }
 ) {
   const fillPath = new SvgPath();
 
   resetSeed(seed);
-  const p = randomPoints(WW, HH, points, { heightRange: 0.5 });
+  const p = randomPoints(WW, HH, points, { heightRange });
   const c = randControls(points, {
     minLen: controlMinLen * controlMaxLen,
     maxLen: controlMaxLen,
