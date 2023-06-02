@@ -22,14 +22,31 @@ function App(props) {
   const [HH, setHH] = useState(300);
   const [points, setPoints] = useState(3);
   const [angleRange, setAngleRange] = useState(0.1);
+  const [controlMinRate, setControlMinRate] = useState(0.2);
+  const [controlMaxLen, setControlMaxLen] = useState(500);
+  const [maxShift, setMaxShift] = useState(0.25);
   const [wavy, setWavy] = useState(() => buildWavy());
 
   useEffect(() => {
     setWavy(buildWavy());
-  }, [WW, HH, points, seed, angleRange]);
+  }, [
+    WW,
+    HH,
+    points,
+    seed,
+    angleRange,
+    controlMinRate,
+    controlMaxLen,
+    maxShift,
+  ]);
 
   function buildWavy() {
-    return wavySvg(seed, WW, HH, points, { angleRange });
+    return wavySvg(seed, WW, HH, points, {
+      angleRange,
+      controlMinLen: controlMinRate,
+      controlMaxLen,
+      controlMaxShift: maxShift,
+    });
   }
 
   function randomizeSeed() {
@@ -97,6 +114,48 @@ function App(props) {
           />
           <span class=${tw`font-mono opacity-70`}
             >${Number.parseFloat(angleRange).toFixed(2)}</span
+          >
+        </div>
+        <div class=${tw`mb-4 text(xl black opacity-75)`}>
+          Control Min Rate
+          <input
+            type="range"
+            min="0"
+            step="0.01"
+            max="1"
+            value=${controlMinRate}
+            class=${tw`cursor-ew-resize mx-2`}
+            onInput=${(e) => setControlMinRate(parseFloat(e.target.value))}
+          />
+          <span class=${tw`font-mono opacity-70`}
+            >${Number.parseFloat(controlMinRate).toFixed(2)}</span
+          >
+        </div>
+        <div class=${tw`mb-4 text(xl black opacity-75)`}>
+          Control Max Length
+          <input
+            type="range"
+            min="0"
+            max="1000"
+            value=${controlMaxLen}
+            class=${tw`cursor-ew-resize mx-2`}
+            onInput=${(e) => setControlMaxLen(parseInt(e.target.value))}
+          />
+          <span class=${tw`font-mono opacity-70`}>${controlMaxLen}</span>
+        </div>
+        <div class=${tw`mb-4 text(xl black opacity-75)`}>
+          Control Max Shift
+          <input
+            type="range"
+            min="0"
+            step="0.01"
+            max="1"
+            value=${maxShift}
+            class=${tw`cursor-ew-resize mx-2`}
+            onInput=${(e) => setMaxShift(parseFloat(e.target.value))}
+          />
+          <span class=${tw`font-mono opacity-70`}
+            >${Number.parseFloat(maxShift).toFixed(2)}</span
           >
         </div>
         <button
