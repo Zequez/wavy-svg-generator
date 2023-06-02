@@ -13,27 +13,36 @@ setup({
 import SvgPath from "./svgPath.js";
 import { randomWave } from "./rand.js";
 
-function generatePath(WW, HH, points) {
+function randomPath(seed, WW, HH, points) {
   const path = new SvgPath();
-  randomWave(WW, HH, points, path);
+  randomWave(seed, WW, HH, points, path);
   path.line(WW, HH);
   path.line(0, HH);
   path.end();
   return path.result();
 }
 
+function randomSeed() {
+  return Math.round(Math.random() * 1000000);
+}
+
 function App(props) {
+  const [seed, setSeed] = useState(() => randomSeed());
   const [WW, setWW] = useState(1440);
   const [HH, setHH] = useState(300);
   const [points, setPoints] = useState(3);
-  const [pathData, setPathData] = useState(generatePath(WW, HH, points));
+  const [pathData, setPathData] = useState(() => generatePath());
 
   useEffect(() => {
-    setPathData(generatePath(WW, HH, points));
-  }, [WW, HH, points]);
+    setPathData(generatePath());
+  }, [WW, HH, points, seed]);
 
-  function regeneratePath() {
-    setPathData(generatePath(WW, HH, points));
+  function generatePath() {
+    return randomPath(seed, WW, HH, points);
+  }
+
+  function randomizeSeed() {
+    setSeed(randomSeed());
   }
 
   function renderDebugElements() {
@@ -41,7 +50,7 @@ function App(props) {
   }
 
   return html`
-    <div class=${tw`font(sans light) pt-4`}>
+    <div class=${tw`font(sans light) pt-4 bg-gray-50`}>
       <h1 class=${tw`text(3xl center)`}>
         Wavy SVG seed-based generator and library
       </h1>
@@ -49,7 +58,16 @@ function App(props) {
         Made specifically for those wacky page dividers everyone loves
       </p>
       <div class=${tw`text-center pt-4`}>
-        <div class=${tw`text(xl black opacity-75)`}>
+        <div class=${tw`mb-4 text(xl black opacity-75)`}>
+          Seed
+          <input
+            class=${tw`rounded-md p-2 mx-2 shadow-md`}
+            type="number"
+            value=${seed}
+            onInput=${(e) => setSeed(parseInt(e.target.value))}
+          />
+        </div>
+        <div class=${tw`mb-4 text(xl black opacity-75)`}>
           Points
           <input
             type="range"
@@ -63,7 +81,7 @@ function App(props) {
         </div>
         <button
           class=${tw`p-2 m-2 bg-blue-400 text-white rounded-md uppercase tracking-wider font-bold transition focus:outline-none hocus:bg-blue-500 hocus:scale-105 active:scale-95`}
-          onClick=${regeneratePath}
+          onClick=${randomizeSeed}
         >
           Randomize
         </button>

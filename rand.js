@@ -1,5 +1,8 @@
-export function r() {
-  return Math.random();
+import { prng_alea } from "//cdn.jsdelivr.net/npm/esm-seedrandom/esm/index.min.mjs";
+
+let r = () => Math.random();
+export function resetSeed(seed) {
+  r = seed === undefined ? () => Math.rand() : prng_alea(seed);
 }
 
 export function randControl() {
@@ -50,7 +53,8 @@ export function randomPoints(WW, HH, points) {
   return pointsX.map((x) => ({ x, y: randHeight(HH) }));
 }
 
-export function randomWave(WW, HH, points, path) {
+export function randomWave(seed, WW, HH, points, path) {
+  resetSeed(seed);
   const p = randomPoints(WW, HH, points);
   const c = randControls(points);
 
