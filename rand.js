@@ -50,8 +50,7 @@ export function randomPoints(WW, HH, points) {
   return pointsX.map((x) => ({ x, y: randHeight(HH) }));
 }
 
-export function randomWave(WW, HH, path) {
-  const points = 5;
+export function randomWave(WW, HH, points, path) {
   const p = randomPoints(WW, HH, points);
   const c = randControls(points);
 
