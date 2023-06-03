@@ -19,7 +19,7 @@ function randomSeed() {
 function App(props) {
   const [seed, setSeed] = useState(() => randomSeed());
   const [WW, setWW] = useState(1440);
-  const [HH, setHH] = useState(300);
+  const [HH, setHH] = useState(400);
   const [points, setPoints] = useState(3);
   const [angleRange, setAngleRange] = useState(0.1);
   const [controlMinRate, setControlMinRate] = useState(0.2);
@@ -214,6 +214,21 @@ function App(props) {
       >
         COPY
       </button>
+      <div class=${tw`text-center py-4`}>
+        <a class=${tw`opacity-80 cursor-pointer`}>
+          ${"Made with ❤️ by "}
+          <a
+            class=${tw`text-blue-500 underline hover:text-blue-700`}
+            href="https://ezequielschwartzman.org"
+            >Ezequiel</a
+          >${" find "}
+          <a
+            class=${tw`text-blue-500 underline hover:text-blue-700`}
+            href="https://github.com/Zequez/wavy-svg-generator"
+            >source code on Github</a
+          >
+        </a>
+      </div>
     </div>
   `;
 
