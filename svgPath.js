@@ -11,7 +11,7 @@ export default class SvgPath {
 
   clone() {
     const newPath = new SvgPath();
-    newPath.instructions = this.instructions;
+    newPath.instructions = this.instructions.concat([]);
     return newPath;
   }
 
