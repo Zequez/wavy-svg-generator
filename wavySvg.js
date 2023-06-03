@@ -105,7 +105,7 @@ export function wavySvg(
     strokePath: strokePath.result(),
     debugPoints: () => {
       const points = [];
-      fillPath.instructions.map(([command, ...args]) => {
+      fillPath.instructions.forEach(([command, ...args]) => {
         if (command === "M") points.push(args);
         else if (command === "C") {
           points.push([args[4], args[5]]);
@@ -116,13 +116,41 @@ export function wavySvg(
     },
     debugControlPoints: () => {
       const points = [];
-      fillPath.instructions.map(([command, ...args]) => {
+      fillPath.instructions.forEach(([command, ...args]) => {
         if (command === "C") {
           points.push([args[0], args[1]]);
           points.push([args[2], args[3]]);
         }
       });
       return points;
+    },
+
+    debugControlLines: () => {
+      const points = [];
+      strokePath.instructions.forEach(([command, ...args]) => {
+        if (command === "M") {
+          points.push([args[0], args[1]]);
+        } else if (command === "C") {
+          points.push([args[0], args[1]]);
+          points.push([args[2], args[3]]);
+          points.push([args[4], args[5]]);
+          points.push([args[4], args[5]]);
+        }
+      });
+      points.pop();
+
+      let lines = [];
+
+      for (let i = 0; i < points.length; i += 2) {
+        lines.push([
+          points[i][0],
+          points[i][1],
+          points[i + 1][0],
+          points[i + 1][1],
+        ]);
+      }
+
+      return lines;
     },
   };
 

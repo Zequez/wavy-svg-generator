@@ -61,16 +61,30 @@ function App(props) {
     let elements = [];
     elements = elements.concat(
       wavy
-        .debugPoints()
-        .map(([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="red" />`)
+        .debugControlPoints()
+        .map(([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="#0F0" />`)
     );
     elements = elements.concat(
       wavy
-        .debugControlPoints()
+        .debugControlLines()
         .map(
-          ([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="green" />`
+          ([x1, y1, x2, y2]) =>
+            html`<line
+              x1="${x1}"
+              y1="${y1}"
+              x2="${x2}"
+              y2="${y2}"
+              stroke-width="3"
+              stroke="#0F0"
+            />`
         )
     );
+    elements = elements.concat(
+      wavy
+        .debugPoints()
+        .map(([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="#F00" />`)
+    );
+    console.log(wavy.debugControlLines());
 
     return elements;
   }
@@ -88,7 +102,7 @@ function App(props) {
           "Seed",
           html`
             <input
-              class=${tw`rounded-md p-2 mx-2 shadow-md`}
+              class=${tw`rounded-md p-2 mx-2 shadow-md w-28`}
               type="number"
               value=${seed}
               onInput=${(e) => setSeed(parseInt(e.target.value))}
