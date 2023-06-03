@@ -213,6 +213,7 @@ function App(props) {
                 d=""
                 stroke-width=${strokeThickness}
                 stroke="currentColor"
+                fill="transparent"
               ></path>`
             : null}
           <path class="fillPath" d=""></path>
@@ -254,10 +255,11 @@ function App(props) {
 ${
   strokeThickness > 0
     ? `<path
-  stroke-opacity="1"
+  stroke-opacity="0.5"
   d="${wavy.strokePath}"
   stroke-width="${strokeThickness}"
   stroke="currentColor"
+  fill="transparent"
 ></path>`
     : ""
 }
