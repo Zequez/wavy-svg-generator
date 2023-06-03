@@ -60,19 +60,23 @@ export function randomPoints(WW, HH, points, { heightRange = 0.5 }) {
   return pointsX.map((x) => ({ x, y: randHeight(HH, heightRange) }));
 }
 
-export function wavySvg(
+export function wavySvg({
   seed,
-  WW,
-  HH,
+  boxW,
+  boxH,
   points,
-  { angleRange, controlMinLen, controlMaxLen, controlMaxShift, heightRange }
-) {
+  angleRange,
+  controlMinRate,
+  controlMaxLen,
+  controlMaxShift,
+  heightRange,
+}) {
   const fillPath = new SvgPath();
 
   resetSeed(seed);
-  const p = randomPoints(WW, HH, points, { heightRange });
+  const p = randomPoints(boxW, boxH, points, { heightRange });
   const c = randControls(points, {
-    minLen: controlMinLen * controlMaxLen,
+    minLen: controlMinRate * controlMaxLen,
     maxLen: controlMaxLen,
     angleRange,
     maxShift: controlMaxShift,
@@ -96,8 +100,8 @@ export function wavySvg(
 
   const strokePath = fillPath.clone();
 
-  fillPath.line(WW, HH);
-  fillPath.line(0, HH);
+  fillPath.line(boxW, boxH);
+  fillPath.line(0, boxH);
   fillPath.end();
 
   const result = {

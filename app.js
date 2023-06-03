@@ -24,7 +24,7 @@ function App(props) {
   const [angleRange, setAngleRange] = useState(0.1);
   const [controlMinRate, setControlMinRate] = useState(0.2);
   const [controlMaxLen, setControlMaxLen] = useState(500);
-  const [maxShift, setMaxShift] = useState(0.25);
+  const [controlMaxShift, setControlMaxShift] = useState(0.25);
   const [strokeThickness, setStrokeThickness] = useState(10);
   const [heightRange, setHeightRange] = useState(0.5);
   const [wavy, setWavy] = useState(() => buildWavy());
@@ -39,16 +39,20 @@ function App(props) {
     angleRange,
     controlMinRate,
     controlMaxLen,
-    maxShift,
+    controlMaxShift,
     heightRange,
   ]);
 
   function buildWavy() {
-    return wavySvg(seed, WW, HH, points, {
+    return wavySvg({
+      seed,
+      boxW: WW,
+      boxH: HH,
+      points,
       angleRange,
-      controlMinLen: controlMinRate,
+      controlMinRate,
       controlMaxLen,
-      controlMaxShift: maxShift,
+      controlMaxShift,
       heightRange,
     });
   }
@@ -84,7 +88,6 @@ function App(props) {
         .debugPoints()
         .map(([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="#F00" />`)
     );
-    console.log(wavy.debugControlLines());
 
     return elements;
   }
@@ -144,8 +147,8 @@ function App(props) {
         ${RangeInput({
           name: "Control Max Shift",
           isRatio: true,
-          value: maxShift,
-          onInput: setMaxShift,
+          value: controlMaxShift,
+          onInput: setControlMaxShift,
         })}
         ${RangeInput({
           name: "Stroke Thickness",
@@ -202,7 +205,7 @@ function App(props) {
               stroke="currentColor"
             ></path>`
           : null}
-        <path fill-opacity="1" class="fillPath" d=""></path>
+        <path class="fillPath" d=""></path>
         ${renderDebugElements()}
       </svg>
       <code class=${tw`bg-gray-200 p-2 block whitespace-pre-wrap`}
@@ -216,7 +219,7 @@ function App(props) {
       </button>
       <div class=${tw`text-center py-4`}>
         <a class=${tw`opacity-80 cursor-pointer`}>
-          ${"Made with ❤️ by "}
+          ${"Crafted with ❤️ by "}
           <a
             class=${tw`text-blue-500 underline hover:text-blue-700`}
             href="https://ezequielschwartzman.org"
@@ -249,7 +252,7 @@ ${
 ></path>`
     : ""
 }
-  <path fill-opacity="1" d="${wavy.fillPath}"></path>
+  <path d="${wavy.fillPath}"></path>
 </svg>
 `;
   }
