@@ -1,4 +1,4 @@
-import { prng_alea } from "//cdn.jsdelivr.net/npm/esm-seedrandom/esm/index.min.mjs";
+import { prng_alea } from "./external.js";
 import SvgPath from "./svgPath.js";
 
 let r = () => Math.random();
@@ -60,17 +60,18 @@ export function randomPoints(WW, HH, points, { heightRange = 0.5 }) {
   return pointsX.map((x) => ({ x, y: randHeight(HH, heightRange) }));
 }
 
-export function wavySvg({
-  seed,
-  boxW,
-  boxH,
-  points,
-  angleRange,
-  controlMinRate,
-  controlMaxLen,
-  controlMaxShift,
-  heightRange,
-}) {
+export function wavySvg(config) {
+  const {
+    seed,
+    boxW,
+    boxH,
+    points,
+    angleRange,
+    controlMinRate,
+    controlMaxLen,
+    controlMaxShift,
+    heightRange,
+  } = config;
   const fillPath = new SvgPath();
 
   resetSeed(seed);
@@ -105,6 +106,7 @@ export function wavySvg({
   fillPath.end();
 
   const result = {
+    config,
     fillPath: fillPath.result(),
     strokePath: strokePath.result(),
     debugPoints: () => {

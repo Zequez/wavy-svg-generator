@@ -1,14 +1,4 @@
-import { h, render } from "https://esm.sh/preact";
-import { useState, useEffect } from "https://esm.sh/preact/hooks";
-import htm from "https://esm.sh/htm";
-import { tw, setup } from "https://cdn.skypack.dev/twind";
-const html = htm.bind(h);
-
-setup({
-  variants: {
-    hocus: ["&:hover", "&:focus"],
-  },
-});
+import { html, tw, render, useState, useEffect, chroma } from "./external.js";
 
 import { wavySvg } from "./wavySvg.js";
 
@@ -28,6 +18,9 @@ function App(props) {
   const [strokeThickness, setStrokeThickness] = useState(10);
   const [heightRange, setHeightRange] = useState(0.5);
   const [wavy, setWavy] = useState(() => buildWavy());
+  const [color, setColor] = useState(chroma("rgb(171, 207, 74)"));
+
+  console.log(color);
 
   useEffect(() => {
     setWavy(buildWavy());
@@ -66,7 +59,7 @@ function App(props) {
     elements = elements.concat(
       wavy
         .debugControlPoints()
-        .map(([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="#0F0" />`)
+        .map(([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="#4e4" />`)
     );
     elements = elements.concat(
       wavy
@@ -79,21 +72,24 @@ function App(props) {
               x2="${x2}"
               y2="${y2}"
               stroke-width="3"
-              stroke="#0F0"
+              stroke="#4e4"
             />`
         )
     );
     elements = elements.concat(
       wavy
         .debugPoints()
-        .map(([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="#F00" />`)
+        .map(([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="#e44" />`)
     );
 
     return elements;
   }
 
   return html`
-    <div class=${tw`font(sans light) pt-4 bg-gray-50`}>
+    <div
+      class=${tw`font(sans light) pt-4 bg-gray-50`}
+      style=${{ background: color.alpha(0.1) }}
+    >
       <h1 class=${tw`text(3xl center)`}>
         Wavy SVG seed-based generator and library
       </h1>
@@ -105,7 +101,7 @@ function App(props) {
           "Seed",
           html`
             <input
-              class=${tw`rounded-md p-2 mx-2 shadow-md w-28`}
+              class=${tw`rounded-md p-2 ml-2 shadow-md w-28`}
               type="number"
               value=${seed}
               onInput=${(e) => setSeed(parseInt(e.target.value))}
@@ -171,6 +167,22 @@ function App(props) {
           value: HH,
           onInput: setHH,
         })}
+        ${InputContainer(
+          "Color",
+          html`
+            <label
+              style=${{ background: color }}
+              class=${tw`relative inline-block bg-white p-1 rounded-md shadow-md w-28 ml-2 h-8 align-middle`}
+            >
+              <input
+                class=${tw`absolute inset-0 opacity-0`}
+                type="color"
+                value=${color}
+                onInput=${(e) => setColor(chroma(e.target.value))}
+              />
+            </label>
+          `
+        )}
 
         <button
           class=${tw`p-2 m-2 bg-blue-400 text-white rounded-md uppercase tracking-wider font-bold transition focus:outline-none hocus:bg-blue-500 hocus:scale-105 active:scale-95`}
@@ -190,24 +202,26 @@ function App(props) {
           d: path("${wavy.strokePath}");
         }
       </style>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 ${WW} ${HH}"
-        preserveAspectRatio="none"
-        fill="currentColor"
-      >
-        ${strokeThickness > 0
-          ? html`<path
-              stroke-opacity="0.5"
-              class="strokePath"
-              d=""
-              stroke-width=${strokeThickness}
-              stroke="currentColor"
-            ></path>`
-          : null}
-        <path class="fillPath" d=""></path>
-        ${renderDebugElements()}
-      </svg>
+      <div style="${{ color }}">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 ${wavy.config.boxW} ${wavy.config.boxH}"
+          preserveAspectRatio="none"
+          fill="currentColor"
+        >
+          ${strokeThickness > 0
+            ? html`<path
+                stroke-opacity="0.5"
+                class="strokePath"
+                d=""
+                stroke-width=${strokeThickness}
+                stroke="currentColor"
+              ></path>`
+            : null}
+          <path class="fillPath" d=""></path>
+          ${renderDebugElements()}
+        </svg>
+      </div>
       <code class=${tw`bg-gray-200 p-2 block whitespace-pre-wrap`}
         >${plainTextSvg()}</code
       >
