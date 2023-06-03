@@ -12,10 +12,8 @@
 
 ## Use as a library
 
-The programming interface is unstable and may change at any moment.
-
 ```javascript
-  import wavySvg from 'https://cdn.jsdelivr.net/gh/zequez/wavy-svg-generator/wavySvg.js';
+  import wavySvg from 'https://cdn.jsdelivr.net/gh/zequez/wavy-svg-generator@0.1.0/wavySvg.js';
 
   const wavy = wavySvg({
     seed,
