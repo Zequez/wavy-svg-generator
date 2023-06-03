@@ -9,6 +9,7 @@
 - Stroke generator in addition to filled shape
 - Visualization of bezier curves control points
 - Text SVG output and quick copy button
+- Configuration persists on browser local storage, so you don't miss your tuning when you reload or close the app
 
 ## Use as a library
 

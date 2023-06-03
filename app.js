@@ -1,26 +1,42 @@
 import { html, tw, render, useState, useEffect, chroma } from "./external.js";
 
 import { wavySvg } from "./wavySvg.js";
+import { usePersistentState } from "./hooks.js";
 
 function randomSeed() {
   return Math.round(Math.random() * 1000000);
 }
 
 function App(props) {
-  const [seed, setSeed] = useState(() => randomSeed());
-  const [WW, setWW] = useState(1440);
-  const [HH, setHH] = useState(400);
-  const [points, setPoints] = useState(3);
-  const [angleRange, setAngleRange] = useState(0.1);
-  const [controlMinRate, setControlMinRate] = useState(0.2);
-  const [controlMaxLen, setControlMaxLen] = useState(500);
-  const [controlMaxShift, setControlMaxShift] = useState(0.25);
-  const [strokeThickness, setStrokeThickness] = useState(10);
-  const [heightRange, setHeightRange] = useState(0.5);
+  const [seed, setSeed] = usePersistentState("seed", () => randomSeed());
+  const [WW, setWW] = usePersistentState("boxW", 1440);
+  const [HH, setHH] = usePersistentState("boxH", 400);
+  const [points, setPoints] = usePersistentState("points", 3);
+  const [angleRange, setAngleRange] = usePersistentState("angleRange", 0.1);
+  const [controlMinRate, setControlMinRate] = usePersistentState(
+    "controlMinRate",
+    0.2
+  );
+  const [controlMaxLen, setControlMaxLen] = usePersistentState(
+    "controlMaxLen",
+    500
+  );
+  const [controlMaxShift, setControlMaxShift] = usePersistentState(
+    "controlMaxShift",
+    0.25
+  );
+  const [strokeThickness, setStrokeThickness] = usePersistentState(
+    "strokeTickness",
+    10
+  );
+  const [heightRange, setHeightRange] = usePersistentState("heightRange", 0.5);
   const [wavy, setWavy] = useState(() => buildWavy());
-  const [color, setColor] = useState(chroma("rgb(171, 207, 74)"));
-
-  console.log(color);
+  const [color, setColor] = usePersistentState(
+    "color",
+    chroma("rgb(171, 207, 74)"),
+    (v) => v.toString(),
+    chroma
+  );
 
   useEffect(() => {
     setWavy(buildWavy());
