@@ -110,20 +110,6 @@ function App(props) {
           `
         )}
         ${RangeInput({
-          name: "Box Width",
-          min: 100,
-          max: 3000,
-          value: WW,
-          onInput: setWW,
-        })}
-        ${RangeInput({
-          name: "Box Height",
-          min: 100,
-          max: 3000,
-          value: HH,
-          onInput: setHH,
-        })}
-        ${RangeInput({
           name: "Points",
           min: 2,
           max: 10,
@@ -167,6 +153,20 @@ function App(props) {
           max: 100,
           value: strokeThickness,
           onInput: setStrokeThickness,
+        })}
+        ${RangeInput({
+          name: "Box Width",
+          min: 100,
+          max: 3000,
+          value: WW,
+          onInput: setWW,
+        })}
+        ${RangeInput({
+          name: "Box Height",
+          min: 100,
+          max: 3000,
+          value: HH,
+          onInput: setHH,
         })}
 
         <button
@@ -243,8 +243,12 @@ ${
 const InputContainer = (name, inputEl) => html` <div
   class=${tw`mb-4 text(xl black opacity-75)`}
 >
-  <div class=${tw`inline-block w-1/2 text-right`}>${name}</div>
-  <div class=${tw`inline-block w-1/2 text-left`}>${inputEl}</div>
+  <div class=${tw`sm:inline-block sm:w-1/2 sm:text-right whitespace-nowrap`}>
+    ${name}
+  </div>
+  <div class=${tw`sm:inline-block sm:w-1/2 sm:text-left whitespace-nowrap`}>
+    ${inputEl}
+  </div>
 </div>`;
 
 const RangeInput = ({ name, min, max, value, onInput, isRatio }) => {
