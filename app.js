@@ -13,22 +13,10 @@ function App(props) {
   const [HH, setHH] = usePersistentState("boxH", 400);
   const [points, setPoints] = usePersistentState("points", 3);
   const [angleRange, setAngleRange] = usePersistentState("angleRange", 0.1);
-  const [controlMinRate, setControlMinRate] = usePersistentState(
-    "controlMinRate",
-    0.2
-  );
-  const [controlMaxLen, setControlMaxLen] = usePersistentState(
-    "controlMaxLen",
-    500
-  );
-  const [controlMaxShift, setControlMaxShift] = usePersistentState(
-    "controlMaxShift",
-    0.25
-  );
-  const [strokeThickness, setStrokeThickness] = usePersistentState(
-    "strokeTickness",
-    10
-  );
+  const [controlMinRate, setControlMinRate] = usePersistentState("controlMinRate", 0.2);
+  const [controlMaxLen, setControlMaxLen] = usePersistentState("controlMaxLen", 500);
+  const [controlMaxShift, setControlMaxShift] = usePersistentState("controlMaxShift", 0.25);
+  const [strokeThickness, setStrokeThickness] = usePersistentState("strokeTickness", 10);
   const [heightRange, setHeightRange] = usePersistentState("heightRange", 0.5);
   const [wavy, setWavy] = useState(() => buildWavy());
   const [color, setColor] = usePersistentState(
@@ -93,22 +81,15 @@ function App(props) {
         )
     );
     elements = elements.concat(
-      wavy
-        .debugPoints()
-        .map(([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="#e44" />`)
+      wavy.debugPoints().map(([x, y]) => html`<circle cx="${x}" cy="${y}" r="8" fill="#e44" />`)
     );
 
     return elements;
   }
 
   return html`
-    <div
-      class=${tw`font(sans light) pt-4 bg-gray-50`}
-      style=${{ background: color.alpha(0.1) }}
-    >
-      <h1 class=${tw`text(3xl center)`}>
-        Wavy SVG seed-based generator and library
-      </h1>
+    <div class=${tw`font(sans light) pt-4 bg-gray-50`} style=${{ background: color.alpha(0.1) }}>
+      <h1 class=${tw`text(3xl center)`}>Wavy SVG seed-based generator and library</h1>
       <p class=${tw`text(xl center black opacity-50)`}>
         Made specifically for those wacky page dividers everyone loves
       </p>
@@ -238,9 +219,7 @@ function App(props) {
           ${renderDebugElements()}
         </svg>
       </div>
-      <code class=${tw`bg-gray-200 p-2 block whitespace-pre-wrap`}
-        >${plainTextSvg()}</code
-      >
+      <code class=${tw`bg-gray-200 p-2 block whitespace-pre-wrap`}>${plainTextSvg()}</code>
       <button
         class=${tw`block bg-blue-400 text-white p-2 w-full font-bold hover:bg-blue-500`}
         onClick=${() => navigator.clipboard.writeText(plainTextSvg())}
@@ -288,15 +267,9 @@ ${
   }
 }
 
-const InputContainer = (name, inputEl) => html` <div
-  class=${tw`mb-4 text(xl black opacity-75)`}
->
-  <div class=${tw`sm:inline-block sm:w-1/2 sm:text-right whitespace-nowrap`}>
-    ${name}
-  </div>
-  <div class=${tw`sm:inline-block sm:w-1/2 sm:text-left whitespace-nowrap`}>
-    ${inputEl}
-  </div>
+const InputContainer = (name, inputEl) => html` <div class=${tw`mb-4 text(xl black opacity-75)`}>
+  <div class=${tw`sm:inline-block sm:w-1/2 sm:text-right whitespace-nowrap`}>${name}</div>
+  <div class=${tw`sm:inline-block sm:w-1/2 sm:text-left whitespace-nowrap`}>${inputEl}</div>
 </div>`;
 
 const RangeInput = ({ name, min, max, value, onInput, isRatio }) => {
@@ -314,10 +287,7 @@ const RangeInput = ({ name, min, max, value, onInput, isRatio }) => {
         value=${value}
         step=${isRatio ? 0.01 : 1}
         class=${tw`cursor-ew-resize mx-2`}
-        onInput=${(e) =>
-          onInput(
-            isRatio ? parseFloat(e.target.value) : parseInt(e.target.value)
-          )}
+        onInput=${(e) => onInput(isRatio ? parseFloat(e.target.value) : parseInt(e.target.value))}
       />
       <span class=${tw`font-mono opacity-70`}
         >${isRatio ? parseFloat(value).toFixed(2) : value}</span
